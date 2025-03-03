@@ -1,0 +1,2 @@
+manip
+-DCATKIN_DEVEL_PREFIX=/home/poul/Desktop/PROGECTS/my_test_manip/ROS/devel -DCMAKE_INSTALL_PREFIX=/home/poul/Desktop/PROGECTS/my_test_manip/ROS/install -G Unix Makefiles

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- Загрузка описания робота на сервер параметров -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find manip)/urdf/manip.urdf"/>
+	<!-- Зададим параметры x,y,z -->
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
+    
+  <!-- Переопределим параметры opt/ros/noetic/share/gazebo_ros/launch файла empty_world.launch-->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+  	<arg name="use_sim_time" value="true"/>
+  	<arg name="debug" value="true"/>
+  	<arg name="gui" value="true"/>
+  	<arg name="paused" value="true"/> <!-- Поставили на паузу -->
+  </include>
+  
+  <node
+    name="tf_footprint_base"
+    pkg="tf"
+    type="static_transform_publisher"
+    args="0 0 0 0 0 0 base_link base_footprint 40" />
+  <node
+    name="spawn_model"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-urdf -param robot_description -model manip -x $(arg x) -y $(arg y) -z $(arg z)"
+    output="screen" /><!-- передали параметры x/y/z модели: -x ${arg x} -y ${arg y} -z ${arg z} -->
+  <node
+    name="fake_joint_calibration"
+    pkg="rostopic"
+    type="rostopic"
+    args="pub /calibrated std_msgs/Bool true" />
+    
+  <!-- Передаём конфигурацию наших контроллеров: -->
+  <rosparam command="load" file="$(find manip)/config/joint_controllers.yaml"/>  
+  
+  <node name="joint_position_publisher" pkg="manip" type="joint_position_publisher.py" output="screen"/>
+  
+  <!-- Объявляем менеджер контроллера, который будет управлять загрузкой и выгрузкой наших контроллеров -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" respawn="false" ns="manip"
+  			args="joint_state_controller 
+  			joint1_position_controller">
+  </node>
+  
+  <!-- Переопределим namespace для robot_state_publisher, чтобы joit_states "смепились" на manip-->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" respawn="false">
+  	<remap from="joint_states" to="/manip/joint_states"/>
+  </node>
+  
+  <!-- Нода автоматического зауска панели управления rqt -->
+  <node name="rqt_reconfigure" pkg="rqt_gui" type="rqt_gui"/>
+</launch>
