@@ -55,21 +55,18 @@
   <build_depend>pospy</build_depend> <!-- python -->
   <build_depend>std_msgs</build_depend> <!--стандертные типы данных ros-->
   <build_depend>urdf</build_depend> <!--для urdf файлов-->
-  <!-- Для загрузи/выгрузки контроллеров
-  <build_depend>controller_manager</build_depend>
-  -->
+  <build_depend>controller_manager</build_depend> <!-- Для загрузи/выгрузки контроллеров -->
   <build_depend>joint_state_controller</build_depend> <!-- Публикует текущее состояние сочленений -->
   <build_depend>robot_state_publisher</build_depend> <!-- Публикует состояние робота для библиотеки преобразований tfto -->
   
   <!-- Тоже, что и сверху, но export -->
-  <buildtool_export_depend>catkin</buildtool_export_depend>
-  <buildtool_export_depend>poscpp</buildtool_export_depend> 
-  <buildtool_export_depend>pospy</buildtool_export_depend> 
-  <buildtool_export_depend>std_msgs</buildtool_export_depend>
-  <buildtool_export_depend>urdf</buildtool_export_depend> 
-  <!--<buildtool_export_depend>controller_manager</buildtool_export_depend>-->
-  <buildtool_export_depend>joint_state_controller</buildtool_export_depend>
-  <buildtool_export_depend>robot_state_publisher</buildtool_export_depend> 
+  <build_export_depend>poscpp</build_export_depend> 
+  <build_export_depend>pospy</build_export_depend> 
+  <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>urdf</build_export_depend> 
+  <build_export_depend>controller_manager</build_export_depend>
+  <build_export_depend>joint_state_controller</build_export_depend>
+  <build_export_depend>robot_state_publisher</build_export_depend> 
     
   <!-- Добвим зависимости, необходимые на этапе выполнения-->
   <exec_depend>poscpp</exec_depend>

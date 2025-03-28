@@ -36,12 +36,14 @@
   <!-- Передаём конфигурацию наших контроллеров: -->
   <rosparam command="load" file="$(find manip)/config/joint_controllers.yaml"/>  
   
-  <node name="joint_position_publisher" pkg="manip" type="joint_position_publisher.py" output="screen"/>
+  <node name="joint1_position_controller" pkg="manip" type="joint1_position_controller.py" output="screen"/>
+  <node name="joint2_position_controller" pkg="manip" type="joint2_position_controller.py" output="screen"/>
   
   <!-- Объявляем менеджер контроллера, который будет управлять загрузкой и выгрузкой наших контроллеров -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" respawn="false" ns="manip"
   			args="joint_state_controller 
-  			joint1_position_controller">
+  			joint1_position_controller
+  			joint2_position_controller">
   </node>
   
   <!-- Переопределим namespace для robot_state_publisher, чтобы joit_states "смепились" на manip-->
